@@ -14,8 +14,11 @@ MongoClient.connect('mongodb+srv://admin:admin@cluster0.tpkms.mongodb.net/todo_j
     app.use(bodyParser.urlencoded({ extended: true }));
     //get request
     app.get("/", (req, res) => {
-        const cursor = db.collection('tasks').find();
-        console.log(cursor);
+        const cursor = db.collection('tasks').find().toArray()
+        .then(results => {
+            console.log(results);
+        })
+        .catch(error => console.error(error))
     })
     //post request
     app.post("/tasks", (req, res) => {
