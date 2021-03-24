@@ -10,13 +10,14 @@ MongoClient.connect('mongodb+srv://admin:admin@cluster0.tpkms.mongodb.net/todo_j
     console.log('Connected to database');
     const db = client.db('todo_js')
     const tasksCollection = db.collection('tasks');
+    app.set('view engine', 'ejs');
     //body parser is a middleware that tidies up the request object before we use them. use middleware with 'use'
     app.use(bodyParser.urlencoded({ extended: true }));
     //get request
     app.get("/", (req, res) => {
-        const cursor = db.collection('tasks').find().toArray()
+        db.collection('tasks').find().toArray()
         .then(results => {
-            console.log(results);
+            res.render('index.ejs', { tasks: results });
         })
         .catch(error => console.error(error))
     })
